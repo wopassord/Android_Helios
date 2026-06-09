@@ -32,4 +32,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Log.e("The device does not have an accelerometer");
         }
     }
-}
+
+    @Override
+    protected void onResume() {
+        //this function enables resuming the app's functioning, once it's reopened  by the user
+        super.onResume();
+
+        if (accelerometer != NULL) {
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        //this function disables the app's functioning once the user leaves it
+        super.onPause();
+
+        if(accelerometer != NULL) {
+            sensorManager.unregisterListener(this);
+        }
+    }
+    }
