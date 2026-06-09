@@ -8,7 +8,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener{
+
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +24,12 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager != NULL) {
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
+        if (sensorManager = NULL){
+            Log.e("The device does not have an accelerometer");
+        }
     }
 }
