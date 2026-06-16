@@ -1,0 +1,27 @@
+\contentsline {section}{\numberline {1}Introducci\'on}{2}{section.1}%
+\contentsline {section}{\numberline {2}Estructura del Proyecto}{2}{section.2}%
+\contentsline {section}{\numberline {3}La Linterna: \texttt {CameraManager}}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}API utilizada}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}B\'usqueda del ID de c\'amara con flash}{3}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Toggle de la linterna}{3}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Sincronizaci\'on de estado con \texttt {TorchCallback}}{4}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Actualizaci\'on del indicador visual}{4}{subsection.3.5}%
+\contentsline {section}{\numberline {4}El Aceler\'ometro: \texttt {SensorManager}}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}API utilizada}{5}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Ciclo de vida: registro y desregistro del listener}{5}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Detecci\'on de Sacudida}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}C\'alculo de la magnitud}{6}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Algoritmo de detecci\'on}{6}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Constantes y umbral configurable}{7}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Gr\'afico en Tiempo Real: \texttt {AccelerometerGraphView}}{8}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Vista personalizada con Canvas}{8}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Buffer circular}{8}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Inicializaci\'on de los pinceles}{9}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}M\'etodo \texttt {onDraw}}{9}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Ejecuci\'on en Segundo Plano: \texttt {TorchService}}{10}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Motivaci\'on}{10}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Arquitectura del servicio}{10}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Traspaso de control entre Activity y Service}{11}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Toggle en la interfaz}{12}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}Declaraci\'on en el Manifest}{12}{subsection.7.5}%
+\contentsline {section}{\numberline {8}Conclusiones}{13}{section.8}%

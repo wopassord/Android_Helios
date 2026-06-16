@@ -1,0 +1,823 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{titlesec}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{array}
+
+\geometry{a4paper, top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+\setlength{\headheight}{15pt}
+
+% ─────────────────────────────────────────────────────────────────────────────
+%  Paleta VSCode Dark+
+% ─────────────────────────────────────────────────────────────────────────────
+\definecolor{vscBg}      {HTML}{1E1E1E}
+\definecolor{vscFg}      {HTML}{D4D4D4}
+\definecolor{vscKeyword} {HTML}{569CD6}
+\definecolor{vscType}    {HTML}{4EC9B0}
+\definecolor{vscString}  {HTML}{CE9178}
+\definecolor{vscComment} {HTML}{6A9955}
+\definecolor{vscNumber}  {HTML}{B5CEA8}
+\definecolor{vscLineNum} {HTML}{858585}
+\definecolor{vscAccent}  {HTML}{DCDCAA}
+\definecolor{vscBorder}  {HTML}{404040}
+
+% ─────────────────────────────────────────────────────────────────────────────
+%  Estilo listings: VSCode Dark+
+% ─────────────────────────────────────────────────────────────────────────────
+\lstdefinestyle{vscode}{
+  backgroundcolor  = \color{vscBg},
+  basicstyle       = \ttfamily\footnotesize\color{vscFg},
+  keywordstyle     = \color{vscKeyword}\bfseries,
+  stringstyle      = \color{vscString},
+  commentstyle     = \color{vscComment}\itshape,
+  numberstyle      = \ttfamily\scriptsize\color{vscLineNum},
+  identifierstyle  = \color{vscFg},
+  numbers          = left,
+  numbersep        = 12pt,
+  tabsize          = 4,
+  showspaces       = false,
+  showstringspaces = false,
+  breaklines       = true,
+  breakatwhitespace= false,
+  frame            = single,
+  frameround       = tttt,
+  framerule        = 0.5pt,
+  rulecolor        = \color{vscBorder},
+  xleftmargin      = 2.2em,
+  framexleftmargin = 1.8em,
+  keepspaces       = true,
+  captionpos       = b,
+  aboveskip        = 1em,
+  belowskip        = 0.5em,
+  literate=
+    {á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{i}}}1 {ó}{{\'{o}}}1 {ú}{{\'{u}}}1
+    {ñ}{{\~{n}}}1 {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1 {Ó}{{\'{O}}}1
+    {Ú}{{\'{U}}}1 {Ñ}{{\~{N}}}1 {ü}{{\"u}}1   {Ü}{{\"U}}1
+    {à}{{\`{a}}}1 {è}{{\`{e}}}1 {â}{{\^{a}}}1 {ê}{{\^{e}}}1
+    {î}{{\^{i}}}1 {ô}{{\^{o}}}1 {û}{{\^{u}}}1 {ç}{{\c{c}}}1 {Ç}{{\c{C}}}1,
+}
+
+\lstdefinestyle{vsxml}{
+  style            = vscode,
+  language         = XML,
+  keywordstyle     = \color{vscType}\bfseries,
+  morekeywords     = {uses-permission, uses-feature, application, activity,
+                      service, intent-filter, action, category, property,
+                      android, manifest},
+}
+
+\lstset{style=vscode, language=Java}
+
+% ─────────────────────────────────────────────────────────────────────────────
+%  Encabezado / pie
+% ─────────────────────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Android Helios}}
+\fancyhead[R]{\small\textit{\leftmark}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ─────────────────────────────────────────────────────────────────────────────
+%  Formato de secciones
+% ─────────────────────────────────────────────────────────────────────────────
+\titleformat{\section}[block]
+  {\large\bfseries}{\thesection.}{0.8em}{}
+  [\vspace{-0.4em}\rule{\textwidth}{0.4pt}\vspace{0.2em}]
+
+\titleformat{\subsection}[block]
+  {\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+
+\titleformat{\subsubsection}[block]
+  {\normalsize\itshape}{\thesubsubsection.}{0.6em}{}
+
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = vscKeyword,
+  urlcolor   = vscType,
+  citecolor  = vscKeyword,
+  pdftitle   = {Android Helios -- Informe Tecnico},
+  pdfauthor  = {Facundo Arito},
+}
+
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{document}
+% ═════════════════════════════════════════════════════════════════════════════
+
+% ─── Portada ──────────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries Android Helios\par}
+  \vspace{0.6cm}
+  {\Large Informe T\'ecnico del Proyecto\par}
+  \vspace{2.5cm}
+  {\color{vscKeyword}\rule{0.55\textwidth}{1.5pt}}\\[0.8em]
+  {\large App Android: Linterna controlada por sacudida\par}
+  {\small Aceler\'ometro + CameraManager + Gr\'afico en tiempo real + Foreground Service\par}
+  {\color{vscKeyword}\rule{0.55\textwidth}{1.5pt}}
+  \vspace{2.5cm}
+
+  \begin{tabular}{@{}ll@{}}
+    \textbf{Autor:}       & Facundo Arito \\[0.4em]
+    \textbf{Materia:}     & Computaci\'on Aplicada a la Ingenier\'ia \\[0.4em]
+    \textbf{Repositorio:} & \texttt{github.com/wopassord/Android\_Helios} \\[0.4em]
+    \textbf{Fecha:}       & Junio de 2026 \\
+  \end{tabular}
+
+  \vfill
+  {\small Stack: Java \textbullet{} Android Studio \textbullet{} Gradle (Kotlin DSL)
+  \textbullet{} minSdk 24 \textbullet{} targetSdk 36}
+\end{titlepage}
+
+% ─── Índice ───────────────────────────────────────────────────────────────────
+\tableofcontents
+\clearpage
+
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Introducci\'on}
+% ═════════════════════════════════════════════════════════════════════════════
+
+Android Helios es una aplicaci\'on Android desarrollada en Java cuyo objetivo
+principal es \textbf{encender o apagar la linterna del tel\'efono mediante un
+patr\'on de sacudida configurable}. La app integra dos m\'odulos de hardware:
+
+\begin{itemize}
+  \item \textbf{Aceler\'ometro:} detecta el movimiento del dispositivo,
+        calcula la magnitud de la aceleraci\'on en unidades de gravedad y
+        aplica un algoritmo de detecci\'on de sacudidas.
+  \item \textbf{C\'amara / Flash:} controla la linterna a trav\'es de
+        \texttt{CameraManager.setTorchMode()}, sin necesidad de abrir un
+        stream de c\'amara.
+\end{itemize}
+
+La interfaz expone tres controles al usuario: un indicador de estado de la
+linterna (c\'irculo cromado + texto), un gr\'afico en tiempo real de la
+aceleraci\'on medida, y un deslizador de sensibilidad. Un toggle en la esquina
+superior derecha permite que la detecci\'on contin\'ue activa incluso cuando el
+usuario sale de la aplicaci\'on.
+
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Estructura del Proyecto}
+% ═════════════════════════════════════════════════════════════════════════════
+
+El proyecto sigue la estructura est\'andar de Android Studio con Gradle (Kotlin
+DSL). Los archivos programados son:
+
+\vspace{0.5em}
+\begin{center}
+\begin{tabular}{@{} l p{9.5cm} @{}}
+  \toprule
+  \textbf{Archivo} & \textbf{Rol} \\
+  \midrule
+  \texttt{MainActivity.java}
+    & Activity \'unica. Coordina el aceler\'ometro, la linterna, el gr\'afico
+      en tiempo real y toda la l\'ogica de UI. \\[0.4em]
+  \texttt{AccelerometerGraphView.java}
+    & Vista personalizada (\texttt{extends View}) que dibuja el gr\'afico de
+      g-force con Canvas de Android. \\[0.4em]
+  \texttt{TorchService.java}
+    & Foreground Service. Replica la detecci\'on de sacudidas y el toggle de
+      la linterna cuando la app est\'a en segundo plano. \\[0.4em]
+  \texttt{activity\_main.xml}
+    & Layout principal: indicador circular, gr\'afico, slider de sensibilidad
+      y toggle de segundo plano. \\[0.4em]
+  \texttt{AndroidManifest.xml}
+    & Declara permisos (CAMERA, FOREGROUND\_SERVICE) y registra el servicio. \\[0.4em]
+  \texttt{drawable/circle\_indicator.xml}
+    & Shape drawable oval que sirve de indicador visual del estado de la
+      linterna. \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+% ═════════════════════════════════════════════════════════════════════════════
+\section{La Linterna: \texttt{CameraManager}}
+% ═════════════════════════════════════════════════════════════════════════════
+
+\subsection{API utilizada}
+
+Android expone el control del flash a trav\'es de
+\texttt{android.hardware.camera2.CameraManager}. El m\'etodo
+\texttt{setTorchMode(String cameraId, boolean enabled)}, disponible desde
+API~23, enciende o apaga el flash sin abrir ning\'un stream de c\'amara ni
+requerir el permiso \texttt{CAMERA} de manera obligatoria.
+
+\subsection{B\'usqueda del ID de c\'amara con flash}
+
+Cada dispositivo puede tener varias c\'amaras. Antes de usar la linterna hay
+que identificar cu\'al tiene flash. Esto se resuelve en
+\texttt{findTorchCameraId()}, llamada una \'unica vez desde \texttt{onCreate()}:
+
+\begin{lstlisting}[caption={B\'usqueda del ID de c\'amara --- \texttt{MainActivity.java}}]
+private String findTorchCameraId() {
+    try {
+        for (String id : cameraManager.getCameraIdList()) {
+            Boolean hasFlash = cameraManager
+                    .getCameraCharacteristics(id)
+                    .get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
+            if (Boolean.TRUE.equals(hasFlash)) return id;
+        }
+    } catch (CameraAccessException e) {
+        Log.e("MainActivity", "Impossible de trouver la camera torch", e);
+    }
+    return null;
+}
+\end{lstlisting}
+
+\texttt{getCameraIdList()} devuelve un array con los identificadores de todas
+las c\'amaras disponibles. Para cada una, se consulta la propiedad
+\texttt{FLASH\_INFO\_AVAILABLE} de sus caracter\'isticas. Se retorna el primer
+ID cuyo flash est\'e disponible, o \texttt{null} si ninguno lo tiene. Si el
+resultado es \texttt{null}, \texttt{onShakeDetected()} no hace nada.
+
+\subsection{Toggle de la linterna}
+
+El encendido y apagado ocurre en \texttt{onShakeDetected()}, disparada por el
+algoritmo de detecci\'on cuando se cumple el patr\'on de sacudida:
+
+\begin{lstlisting}[caption={Toggle de la linterna --- \texttt{MainActivity.java}}]
+private void onShakeDetected() {
+    if (torchCameraId == null) return;
+    try {
+        cameraManager.setTorchMode(torchCameraId, !torchOn);
+    } catch (CameraAccessException e) {
+        Log.e("MainActivity", "Impossible de basculer la torche", e);
+    }
+}
+\end{lstlisting}
+
+Notar que \texttt{torchOn} \emph{no} se modifica aqu\'i directamente.
+La fuente de verdad del estado real del flash es el \texttt{TorchCallback}
+(secci\'on siguiente), lo que evita desincronizaciones si otra app o el
+\texttt{TorchService} modifica el flash en paralelo.
+
+\subsection{Sincronizaci\'on de estado con \texttt{TorchCallback}}
+
+\texttt{CameraManager} provee un mecanismo de callback para recibir
+notificaciones cuando el estado del flash cambia, sin importar el origen del
+cambio:
+
+\begin{lstlisting}[caption={Registro y uso del \texttt{TorchCallback} --- \texttt{MainActivity.java}}]
+private final CameraManager.TorchCallback torchCallback =
+        new CameraManager.TorchCallback() {
+    @Override
+    public void onTorchModeChanged(String cameraId, boolean enabled) {
+        if (cameraId.equals(torchCameraId)) {
+            torchOn = enabled;
+            updateTorchUI();
+        }
+    }
+};
+
+// En onCreate():
+cameraManager.registerTorchCallback(
+        torchCallback,
+        new Handler(Looper.getMainLooper()));
+
+// En onDestroy():
+cameraManager.unregisterTorchCallback(torchCallback);
+\end{lstlisting}
+
+El \texttt{Handler} con \texttt{Looper.getMainLooper()} garantiza que
+\texttt{onTorchModeChanged()} se ejecute en el hilo principal, permitiendo
+actualizar la UI directamente desde el callback sin necesidad de
+\texttt{runOnUiThread()}.
+
+\subsection{Actualizaci\'on del indicador visual}
+
+Cuando el callback dispara \texttt{updateTorchUI()}, se modifica el color del
+\texttt{View} circular (un \texttt{GradientDrawable}) y el texto de estado:
+
+\begin{lstlisting}[caption={Actualizaci\'on del indicador de estado --- \texttt{MainActivity.java}}]
+private void updateTorchUI() {
+    GradientDrawable drawable =
+            (GradientDrawable) viewTorchIndicator.getBackground();
+    if (torchOn) {
+        drawable.setColor(0xFFFFC107);      // ambar
+        tvTorchStatus.setText("ALLUMÉE");
+        tvTorchStatus.setTextColor(0xFFFFC107);
+    } else {
+        drawable.setColor(0xFF9E9E9E);      // gris
+        tvTorchStatus.setText("ÉTEINTE");
+        tvTorchStatus.setTextColor(0xFF9E9E9E);
+    }
+}
+\end{lstlisting}
+
+El color del drawable se modifica en tiempo de ejecuci\'on mediante
+\texttt{setColor()}: el c\'irculo pasa de gris (\texttt{\#9E9E9E}) a \'ambar
+(\texttt{\#FFC107}) al encender la linterna, y vuelve a gris al apagarla.
+Esta es la \'unica funci\'on de la app que modifica elementos de UI, lo que
+centraliza la l\'ogica de presentaci\'on en un \'unico lugar.
+
+% ═════════════════════════════════════════════════════════════════════════════
+\section{El Aceler\'ometro: \texttt{SensorManager}}
+% ═════════════════════════════════════════════════════════════════════════════
+
+\subsection{API utilizada}
+
+El sistema de sensores de Android se accede a trav\'es de
+\texttt{android.hardware.SensorManager}. Para recibir lecturas del
+aceler\'ometro, \texttt{MainActivity} implementa la interfaz
+\texttt{SensorEventListener}, que obliga a definir dos m\'etodos:
+\texttt{onSensorChanged()} y \texttt{onAccuracyChanged()}.
+
+El aceler\'ometro se obtiene e inicializa en \texttt{onCreate()}:
+
+\begin{lstlisting}[caption={Inicializaci\'on del aceler\'ometro --- \texttt{MainActivity.java}}]
+sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+if (sensorManager != null) {
+    accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+}
+if (accelerometer == null) {
+    Log.e("MainActivity", "Cet appareil n'a pas d'accelerometre");
+}
+\end{lstlisting}
+
+\subsection{Ciclo de vida: registro y desregistro del listener}
+
+Un aspecto cr\'itico del uso de sensores en Android es gestionar
+correctamente el ciclo de vida. El listener se registra \'unicamente cuando
+la app est\'a en primer plano y se desregistra al salir, lo que ahorra bater\'ia
+y evita lecturas innecesarias:
+
+\begin{lstlisting}[caption={Gesti\'on del ciclo de vida del sensor --- \texttt{MainActivity.java}}]
+@Override
+protected void onResume() {
+    super.onResume();
+    stopService(new Intent(this, TorchService.class));
+    if (accelerometer != null) {
+        sensorManager.registerListener(
+                this,
+                accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+}
+
+@Override
+protected void onPause() {
+    super.onPause();
+    if (accelerometer != null) {
+        sensorManager.unregisterListener(this);
+    }
+    if (backgroundEnabled) {
+        Intent intent = new Intent(this, TorchService.class);
+        intent.putExtra(TorchService.EXTRA_THRESHOLD, shakeThreshold);
+        intent.putExtra(TorchService.EXTRA_TORCH_STATE, torchOn);
+        startForegroundService(intent);
+    }
+}
+\end{lstlisting}
+
+\texttt{SENSOR\_DELAY\_NORMAL} define una cadencia de muestreo de
+aproximadamente 200\,ms entre lecturas. En \texttt{onResume()} tambi\'en se
+detiene el \texttt{TorchService} si estuviese corriendo, para garantizar que
+en todo momento \emph{solo un} componente escucha el sensor.
+
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Detecci\'on de Sacudida}
+% ═════════════════════════════════════════════════════════════════════════════
+
+\subsection{C\'alculo de la magnitud}
+
+El aceler\'ometro entrega tres valores: aceleraci\'on en los ejes $X$, $Y$ y
+$Z$ expresada en m/s$^2$. Para detectar una sacudida independientemente de la
+orientaci\'on del tel\'efono, se calcula la \textbf{magnitud del vector de
+aceleraci\'on} normalizada en unidades de gravedad (g-force):
+
+\[
+  g_{\text{force}} =
+    \sqrt{
+      \left(\frac{a_x}{g}\right)^2 +
+      \left(\frac{a_y}{g}\right)^2 +
+      \left(\frac{a_z}{g}\right)^2
+    }
+\]
+
+donde $g = 9{,}80665\,\text{m/s}^2$ (\texttt{SensorManager.GRAVITY\_EARTH}).
+Con el tel\'efono en reposo, el vector apunta en la direcci\'on de la gravedad
+con magnitud $\approx 1\,g$. Una sacudida produce picos de $2{,}5\,g$--$5\,g$.
+
+\subsection{Algoritmo de detecci\'on}
+
+La funci\'on \texttt{onSensorChanged()} se ejecuta con cada nueva lectura del
+sensor y concentra toda la l\'ogica de detecci\'on:
+
+\begin{lstlisting}[caption={Detecci\'on de sacudida en tiempo real --- \texttt{MainActivity.java}}]
+@Override
+public void onSensorChanged(SensorEvent event) {
+    float gX = event.values[0] / SensorManager.GRAVITY_EARTH;
+    float gY = event.values[1] / SensorManager.GRAVITY_EARTH;
+    float gZ = event.values[2] / SensorManager.GRAVITY_EARTH;
+    float gForce = (float) Math.sqrt(gX * gX + gY * gY + gZ * gZ);
+
+    graphAccelerometer.addValue(gForce);   // actualiza el grafico
+
+    if (gForce < shakeThreshold) return;   // filtro 1: umbral
+
+    long now = System.currentTimeMillis();
+    if (now - lastShakeTime < SHAKE_SLOP_TIME_MS) return; // filtro 2
+
+    if (now - lastShakeTime > SHAKE_COUNT_RESET_TIME_MS) {
+        shakeCount = 0;                    // filtro 3: ventana temporal
+    }
+
+    lastShakeTime = now;
+    shakeCount++;
+
+    if (shakeCount >= MIN_SHAKE_COUNT) {
+        shakeCount = 0;
+        onShakeDetected();
+    }
+}
+\end{lstlisting}
+
+El algoritmo funciona en cuatro capas de filtrado superpuestas:
+
+\begin{enumerate}
+  \item \textbf{Filtro de umbral} (\texttt{shakeThreshold}): si
+        \texttt{gForce} no supera el umbral, la lectura se descarta. El umbral
+        es ajustado en tiempo real por el slider de sensibilidad (de
+        $4{,}0\,g$ poco sensible a $1{,}5\,g$ muy sensible).
+
+  \item \textbf{Tiempo m\'inimo entre sacudidas}
+        (\texttt{SHAKE\_SLOP\_TIME\_MS = 500\,ms}): evita que un \'unico
+        movimiento brusco cuente como m\'ultiples sacudidas mientras la
+        lectura del sensor sigue superando el umbral.
+
+  \item \textbf{Ventana temporal de reinicio}
+        (\texttt{SHAKE\_COUNT\_RESET\_TIME\_MS = 3000\,ms}): si transcurren
+        m\'as de 3 segundos entre dos sacudidas v\'alidas, el contador se pone
+        a cero. Esto obliga a que las sacudidas sean consecutivas y no
+        acumuladas a lo largo del tiempo.
+
+  \item \textbf{Contador m\'inimo} (\texttt{MIN\_SHAKE\_COUNT = 2}): se
+        necesitan al menos 2 sacudidas v\'alidas y consecutivas para disparar
+        \texttt{onShakeDetected()}. Esto previene activaciones accidentales por
+        un \'unico golpe.
+\end{enumerate}
+
+\subsection{Constantes y umbral configurable}
+
+Los par\'ametros de tiempo son constantes de clase; \texttt{shakeThreshold}
+es un campo mutable para que el slider pueda modificarlo en tiempo real:
+
+\begin{lstlisting}[caption={Constantes del algoritmo de detecci\'on --- \texttt{MainActivity.java}}]
+private static final int SHAKE_SLOP_TIME_MS        = 500;
+private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
+private static final int MIN_SHAKE_COUNT           = 2;
+
+private float shakeThreshold = 2.75f;
+\end{lstlisting}
+
+La f\'ormula de mapeo del slider al umbral:
+
+\begin{lstlisting}[caption={Ajuste din\'amico del umbral desde el \texttt{SeekBar} --- \texttt{MainActivity.java}}]
+seekBarSensitivity.setOnSeekBarChangeListener(
+        new SeekBar.OnSeekBarChangeListener() {
+    @Override
+    public void onProgressChanged(SeekBar seekBar,
+                                  int progress,
+                                  boolean fromUser) {
+        shakeThreshold = 4.0f - (progress * 0.25f);
+        tvSensitivityValue.setText(progress + " / 10");
+        graphAccelerometer.setThreshold(shakeThreshold);
+    }
+    @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+    @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+});
+\end{lstlisting}
+
+La f\'ormula \texttt{4.0 - progress * 0.25} mapea el rango $[0,\,10]$ del
+slider al rango de umbral $[4{,}0\,g,\;1{,}5\,g]$: a mayor nivel de
+sensibilidad (slider a la derecha), menor es el umbral y m\'as f\'acil resulta
+disparar la detecci\'on. El valor por defecto es \texttt{progress = 5}
+($\rightarrow 2{,}75\,g$).
+
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Gr\'afico en Tiempo Real: \texttt{AccelerometerGraphView}}
+% ═════════════════════════════════════════════════════════════════════════════
+
+\subsection{Vista personalizada con Canvas}
+
+Para visualizar los valores del aceler\'ometro en tiempo real se implement\'o
+\texttt{AccelerometerGraphView}, una clase que extiende
+\texttt{android.view.View} y dibuja directamente sobre un \texttt{Canvas}.
+
+El gr\'afico muestra:
+\begin{itemize}
+  \item \textbf{L\'inea azul}: magnitud \texttt{gForce} en tiempo real.
+  \item \textbf{L\'inea roja punteada}: umbral actual, se desplaza
+        verticalmente al mover el slider.
+  \item \textbf{Grilla gris}: l\'ineas horizontales cada 1\,g.
+\end{itemize}
+
+\subsection{Buffer circular}
+
+La vista mantiene un buffer circular de 150 muestras. Al llegar una nueva
+lectura, sobreescribe la posici\'on m\'as antigua y el puntero \texttt{head}
+avanza en m\'odulo:
+
+\begin{lstlisting}[caption={Buffer circular y actualizaci\'on --- \texttt{AccelerometerGraphView.java}}]
+private static final int   BUFFER_SIZE = 150;
+private static final float Y_MAX       = 5.0f;
+
+private final float[] values = new float[BUFFER_SIZE];
+private int   head      = 0;
+private int   count     = 0;
+private float threshold = 2.75f;
+
+public void addValue(float gForce) {
+    values[head] = gForce;
+    head = (head + 1) % BUFFER_SIZE;
+    if (count < BUFFER_SIZE) count++;
+    postInvalidate();
+}
+
+public void setThreshold(float threshold) {
+    this.threshold = threshold;
+    postInvalidate();
+}
+\end{lstlisting}
+
+\texttt{postInvalidate()} es \emph{thread-safe}: puede llamarse desde cualquier
+hilo (incluyendo el hilo del sensor) y programa un redibujo en el hilo de UI.
+El eje Y del gr\'afico cubre de $0$ a $5\,g$ (\texttt{Y\_MAX}), rango que
+contiene en todo momento la l\'inea de umbral (entre $1{,}5\,g$ y $4{,}0\,g$).
+
+\subsection{Inicializaci\'on de los pinceles}
+
+Los objetos \texttt{Paint} se crean \emph{\'unicamente en el constructor}, nunca
+dentro de \texttt{onDraw()}. Esta es una regla fundamental en Android: instanciar
+objetos en \texttt{onDraw()} genera basura en cada frame y degrada
+significativamente el rendimiento.
+
+\begin{lstlisting}[caption={Inicializaci\'on de \texttt{Paint} en el constructor --- \texttt{AccelerometerGraphView.java}}]
+public AccelerometerGraphView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+
+    linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    linePaint.setColor(0xFF42A5F5);      // azul Material Blue 400
+    linePaint.setStrokeWidth(3f);
+    linePaint.setStyle(Paint.Style.STROKE);
+
+    thresholdPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    thresholdPaint.setColor(0xFFEF5350); // rojo Material Red 400
+    thresholdPaint.setStrokeWidth(2f);
+    thresholdPaint.setStyle(Paint.Style.STROKE);
+    thresholdPaint.setPathEffect(
+            new DashPathEffect(new float[]{16f, 8f}, 0));
+
+    gridPaint = new Paint();
+    gridPaint.setColor(0x33FFFFFF);      // blanco al 20% de opacidad
+    gridPaint.setStrokeWidth(1f);
+}
+\end{lstlisting}
+
+El \texttt{DashPathEffect} de la l\'inea de umbral recibe un array de dos
+valores: $[16, 8]$ significa segmento de 16\,px encendido, 8\,px apagado,
+generando el efecto de l\'inea punteada.
+
+\subsection{M\'etodo \texttt{onDraw}}
+
+\texttt{onDraw()} se ejecuta cada vez que la vista necesita redibujarse. Dibuja
+tres capas en orden sobre el \texttt{Canvas}:
+
+\begin{lstlisting}[caption={Dibujo del gr\'afico con Canvas --- \texttt{AccelerometerGraphView.java}}]
+@Override
+protected void onDraw(Canvas canvas) {
+    int w = getWidth();
+    int h = getHeight();
+
+    canvas.drawColor(0xFF1E1E1E);           // fondo oscuro VSCode
+
+    for (int g = 1; g <= 4; g++) {         // grilla cada 1g
+        float y = h * (1f - g / Y_MAX);
+        canvas.drawLine(0, y, w, y, gridPaint);
+    }
+
+    float ty = h * (1f - threshold / Y_MAX); // linea de umbral
+    canvas.drawLine(0, ty, w, ty, thresholdPaint);
+
+    if (count < 2) return;
+
+    path.reset();
+    float xStep = (float) w / (BUFFER_SIZE - 1);
+    for (int i = 0; i < count; i++) {
+        int   idx = (head - count + i + BUFFER_SIZE) % BUFFER_SIZE;
+        float x   = i * xStep;
+        float y   = h * (1f - Math.min(values[idx], Y_MAX) / Y_MAX);
+        if (i == 0) path.moveTo(x, y);
+        else        path.lineTo(x, y);
+    }
+    canvas.drawPath(path, linePaint);
+}
+\end{lstlisting}
+
+La coordenada vertical en p\'ixeles para un valor $v$ se calcula como:
+
+\[
+  y_{\text{px}} = h \cdot \left(1 - \frac{v}{Y_{\max}}\right)
+\]
+
+El factor $(1 - \cdot)$ invierte el eje porque en el sistema de coordenadas
+del Canvas de Android el eje $Y$ crece hacia abajo (el origen est\'a en la
+esquina superior izquierda). El \'indice \texttt{idx} recorre el buffer
+circular en orden cronol\'ogico: del dato m\'as antiguo (izquierda) al m\'as
+reciente (derecha), produciendo el efecto de scroll hacia la izquierda a
+medida que llegan nuevas muestras.
+
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Ejecuci\'on en Segundo Plano: \texttt{TorchService}}
+% ═════════════════════════════════════════════════════════════════════════════
+
+\subsection{Motivaci\'on}
+
+El comportamiento predeterminado de Android es suspender el aceler\'ometro
+cuando la Activity entra en pausa (al salir de la app). Para mantener la
+funcionalidad activa en segundo plano, Android exige usar un
+\textbf{Foreground Service}: un servicio que muestra una notificaci\'on
+persistente, informando al usuario que la aplicaci\'on sigue activa. Esto
+impide que el sistema operativo mate el proceso por falta de recursos.
+
+\subsection{Arquitectura del servicio}
+
+\texttt{TorchService} extiende \texttt{Service} e implementa
+\texttt{SensorEventListener}, replicando exactamente la misma l\'ogica de
+detecci\'on de sacudidas de \texttt{MainActivity}:
+
+\begin{lstlisting}[caption={Arranque del servicio --- \texttt{TorchService.java}}]
+@Override
+public int onStartCommand(Intent intent, int flags, int startId) {
+    if (intent != null) {
+        shakeThreshold = intent.getFloatExtra(EXTRA_THRESHOLD, 2.75f);
+        torchOn        = intent.getBooleanExtra(EXTRA_TORCH_STATE, false);
+    }
+    createNotificationChannel();
+    startForeground(NOTIF_ID, buildNotification());
+    if (accelerometer != null) {
+        sensorManager.registerListener(
+                this,
+                accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+    return START_STICKY;
+}
+\end{lstlisting}
+
+El servicio recibe el umbral de sensibilidad y el estado actual del flash como
+\texttt{Intent extras}, para continuar desde donde lo dej\'o la Activity.
+\texttt{startForeground()} debe invocarse antes de que transcurran 5 segundos
+desde el inicio del servicio. \texttt{START\_STICKY} indica al sistema operativo
+que, si necesita terminar el proceso, debe reiniciarlo autom\'aticamente.
+
+La notificaci\'on persistente se construye con \texttt{NotificationCompat}:
+
+\begin{lstlisting}[caption={Construcci\'on de la notificaci\'on --- \texttt{TorchService.java}}]
+private Notification buildNotification() {
+    Intent intent = new Intent(this, MainActivity.class);
+    PendingIntent pi = PendingIntent.getActivity(
+            this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+    return new NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("Helios actif")
+            .setContentText("Secouez pour allumer/eteindre la torche")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentIntent(pi)
+            .build();
+}
+\end{lstlisting}
+
+El \texttt{PendingIntent} con \texttt{FLAG\_IMMUTABLE} permite al usuario
+tocar la notificaci\'on para volver a la Activity.
+
+\subsection{Traspaso de control entre Activity y Service}
+
+El dise\~no garantiza que en todo momento \emph{solo uno} de los dos
+componentes escucha el aceler\'ometro:
+
+\begin{center}
+\begin{tabular}{@{} l l l @{}}
+  \toprule
+  \textbf{Estado de la app} & \textbf{Toggle fondo} & \textbf{Qui\'en escucha} \\
+  \midrule
+  En primer plano & OFF & MainActivity \\
+  En primer plano & ON  & MainActivity \\
+  En segundo plano & OFF & Nadie (sensor inactivo) \\
+  En segundo plano & ON  & TorchService \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Al volver a la app, \texttt{onResume()} detiene el servicio \emph{antes} de
+registrar el listener en la Activity:
+
+\begin{lstlisting}[caption={Traspaso de vuelta a la Activity --- \texttt{MainActivity.java}}]
+@Override
+protected void onResume() {
+    super.onResume();
+    stopService(new Intent(this, TorchService.class));
+    if (accelerometer != null) {
+        sensorManager.registerListener(
+                this,
+                accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+}
+\end{lstlisting}
+
+Al salir de la app, \texttt{onPause()} desregistra el listener de la Activity
+y, si el toggle est\'a activo, lanza el servicio:
+
+\begin{lstlisting}[caption={Traspaso hacia el servicio al pausar --- \texttt{MainActivity.java}}]
+@Override
+protected void onPause() {
+    super.onPause();
+    if (accelerometer != null) {
+        sensorManager.unregisterListener(this);
+    }
+    if (backgroundEnabled) {
+        Intent intent = new Intent(this, TorchService.class);
+        intent.putExtra(TorchService.EXTRA_THRESHOLD, shakeThreshold);
+        intent.putExtra(TorchService.EXTRA_TORCH_STATE, torchOn);
+        startForegroundService(intent);
+    }
+}
+\end{lstlisting}
+
+\subsection{Toggle en la interfaz}
+
+El usuario controla el modo segundo plano con un \texttt{SwitchMaterial}
+ubicado en la esquina superior derecha de la pantalla. Su estado se almacena
+en el campo \texttt{backgroundEnabled}:
+
+\begin{lstlisting}[caption={Toggle de modo segundo plano --- \texttt{MainActivity.java}}]
+SwitchMaterial switchBackground = findViewById(R.id.switchBackground);
+switchBackground.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> backgroundEnabled = isChecked);
+\end{lstlisting}
+
+\subsection{Declaraci\'on en el Manifest}
+
+Para que Android reconozca el servicio y le permita ejecutarse en primer
+plano, se lo declara en \texttt{AndroidManifest.xml}:
+
+\begin{lstlisting}[style=vsxml, caption={Permisos y declaraci\'on del servicio --- \texttt{AndroidManifest.xml}}]
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name=
+    "android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+<service
+    android:name=".TorchService"
+    android:foregroundServiceType="specialUse"
+    android:exported="false" />
+\end{lstlisting}
+
+El tipo \texttt{specialUse} es el m\'as apropiado para este caso: la
+combinaci\'on de aceler\'ometro y control de flash no encaja en ninguna de las
+categor\'ias espec\'ificas de Android~14 (c\'amara, ubicaci\'on, salud, etc.).
+\texttt{POST\_NOTIFICATIONS} es requerido para mostrar la notificaci\'on
+persistente en Android~13 y superior. El permiso se solicita en tiempo de
+ejecuci\'on desde \texttt{onCreate()} de la Activity.
+
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Conclusiones}
+% ═════════════════════════════════════════════════════════════════════════════
+
+Android Helios integra los dos m\'odulos de hardware requeridos---aceler\'ometro
+y c\'amara/flash---de forma funcional y robusta. Los puntos clave del dise\~no son:
+
+\begin{itemize}
+  \item \textbf{Detecci\'on de sacudidas en cuatro capas}: umbral de g-force
+        $+$ tiempo m\'inimo entre sacudidas $+$ ventana de reinicio $+$
+        contador m\'inimo. Cada capa reduce los falsos positivos
+        independientemente.
+
+  \item \textbf{TorchCallback como fuente \'unica de verdad}: el estado de la
+        linterna siempre refleja el estado real del hardware, sin importar
+        qu\'e componente lo cambi\'o (Activity, Service, u otra app).
+
+  \item \textbf{Gr\'afico como herramienta de calibraci\'on}: el usuario puede
+        ver en tiempo real la magnitud de sus movimientos y ajustar el umbral
+        hasta que la l\'inea roja quede por debajo de sus sacudidas y por
+        encima del ruido de fondo.
+
+  \item \textbf{Ciclo de vida estricto}: el sensor nunca corre en segundo
+        plano sin consentimiento expl\'icito, y cuando lo hace, el sistema
+        operativo es notificado correctamente a trav\'es del Foreground
+        Service con su notificaci\'on persistente.
+\end{itemize}
+
+\end{document}
