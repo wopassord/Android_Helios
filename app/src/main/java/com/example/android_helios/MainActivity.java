@@ -16,8 +16,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
+    private static final float SHAKE_THRESHOLD_GRAVITY = 2.7f;
+    private static final int SHAKE_SLOP_TIME_MS = 500;
+    private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
+    private static final int MIN_SHAKE_COUNT = 2;
+
     private SensorManager sensorManager;
     private Sensor accelerometer;
+    private long lastShakeTime;
+    private int shakeCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        float gX = event.values[0] / SensorManager.GRAVITY_EARTH;
+        float gY = event.values[1] / SensorManager.GRAVITY_EARTH;
+        float gZ = event.values[2] / SensorManager.GRAVITY_EARTH;
+        float gForce = (float) Math.sqrt(gX * gX + gY * gY + gZ * gZ);
+
+        if (gForce < SHAKE_THRESHOLD_GRAVITY) return;
+
+        long now = System.currentTimeMillis();
+        if (now - lastShakeTime < SHAKE_SLOP_TIME_MS) return;
+
+        if (now - lastShakeTime > SHAKE_COUNT_RESET_TIME_MS) {
+            shakeCount = 0;
+        }
+
+        lastShakeTime = now;
+        shakeCount++;
+
+        if (shakeCount >= MIN_SHAKE_COUNT) {
+            shakeCount = 0;
+            onShakeDetected();
+        }
+    }
+
+    private void onShakeDetected() {
+        Log.d("MainActivity", "Shake detected");
     }
 
     @Override
